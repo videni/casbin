@@ -1,0 +1,22 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Videni\Bundle\CasbinBundle\Authorization\Voter\CasbinVoter:
+        tags:
+            - { name: 'security.voter' }
+
+    Videni\Bundle\CasbinBundle\Model\ObjectIdentityRetrievalStrategy: ~
+
+    Videni\Bundle\CasbinBundle\Model\ObjectIdentityRetrievalStrategyInterface:
+        alias: 'Videni\Bundle\CasbinBundle\Model\ObjectIdentityRetrievalStrategy'
+
+    Videni\Bundle\CasbinBundle\Model\SecurityIdentityRetrievalStrategy:
+        arguments:
+            - '@security.role_hierarchy'
+            - '@security.authentication.trust_resolver'
+
+    Videni\Bundle\CasbinBundle\Model\SecurityIdentityRetrievalStrategyInterface:
+        alias: 'Videni\Bundle\CasbinBundle\Model\SecurityIdentityRetrievalStrategy'

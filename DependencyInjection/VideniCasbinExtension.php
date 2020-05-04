@@ -7,6 +7,9 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Casbin\Enforcer;
 use Symfony\Component\DependencyInjection\Definition;
 use Videni\Bundle\CasbinBundle\EnforcerManager;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Reference;
 
 class VideniCasbinExtension extends Extension
 {
@@ -18,6 +21,9 @@ class VideniCasbinExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.yaml');
+
         $this->configureEnforcers($container, $config);
     }
 
@@ -26,17 +32,21 @@ class VideniCasbinExtension extends Extension
         $enforcers = [];
 
         foreach($config['enforcers'] as $name => $enforcerConfiguration) {
-            list($class, $path, $options) = $enforcerConfiguration;
-            $adapter = new $class($options);
+            $class = $enforcerConfiguration['class'];
+
+            $adapterDefinition = (new Definition($class))
+                ->addArgument($enforcerConfiguration['options']);
 
             $enforcerDef = (new Definition(Enforcer::class, [
-                    $path,
-                    $adapter,
+                    $enforcerConfiguration['path'],
+                    $adapterDefinition,
                 ]))
                 ->setPublic(true);
+
             $enforcerId = sprintf('videni_casbin.%s_enforcer', $name);
             $enforcers[$name] = $enforcerId;
-            $container->setDefinition($enforcerId, $enforcerDef);
+            $container
+                ->setDefinition($enforcerId, $enforcerDef);
         }
 
         $container->setAlias(
@@ -44,9 +54,20 @@ class VideniCasbinExtension extends Extension
             sprintf('videni_casbin.%s_enforcer', $config['default'])
         );
 
-        $container->register('videni_casbin.enforce_manager', EnforcerManager::class)
+        if (!in_array($config['default'], array_keys($enforcers))) {
+            throw new \Exception(sprintf(
+                'Enforcer %s is not configured, available enforcers are %s',
+                $config['default'],
+                implode(',', array_keys($enforcers))
+            ));
+        }
+
+        $container
+            ->register('videni_casbin.enforce_manager', EnforcerManager::class)
             ->addArgument($config['default'])
             ->addArgument($enforcers)
-            ->addArgument($container);
+            ->addArgument(new Reference('service_container'));
+
+        $container->setAlias(EnforcerManager::class, 'videni_casbin.enforce_manager');
     }
 }

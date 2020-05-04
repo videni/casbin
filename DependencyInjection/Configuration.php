@@ -17,6 +17,10 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $treeBuilder->root('videni_casbin')
             ->children()
+                ->scalarNode('default')
+                    ->isRequired()
+                    ->cannotBeEmpty()
+                ->end()
                 ->append($this->getEnforcersNode())
             ->end();
 
@@ -32,15 +36,15 @@ class Configuration implements ConfigurationInterface
         $enforcerNode = $node
             ->requiresAtLeastOneElement()
             ->useAttributeAsKey('name')
-            ->prototype('array');
+            ->arrayPrototype();
 
         $enforcerNode
             ->children()
                 ->scalarNode('class')
-                    ->default(FileAdapter::class)
+                    ->defaultValue(FileAdapter::class)
                     ->validate()
-                        ->ifFalse(function($v){
-                            return \class_exists($v);
+                        ->ifTrue(function($v){
+                            return !\class_exists($v);
                         })
                         ->thenInvalid('The %s adapter class doesn\'t exist')
                     ->end()
@@ -49,17 +53,17 @@ class Configuration implements ConfigurationInterface
                     ->useAttributeAsKey('key')
                     ->prototype('scalar')->end()
                 ->end()
-                ->scalarNode('model_path')
+                ->scalarNode('path')
                     ->isRequired()
                     ->validate()
-                        ->ifFalse(function($v){
-                            return \file_exists($v) || \is_readable($v);
+                        ->ifTrue(function($v){
+                            return !\file_exists($v) || !\is_readable($v);
                         })
                         ->thenInvalid('Please make sure the model file %s exists and readable')
                     ->end()
                 ->end()
             ->end();
 
-        return $enforcerNode;
+        return $node;
     }
 }
