@@ -8,15 +8,20 @@ services:
         tags:
             - { name: 'security.voter' }
 
-    Videni\Bundle\CasbinBundle\Model\ObjectIdentityRetrievalStrategy: ~
+    Videni\Bundle\CasbinBundle\Acl\Domain\ObjectIdentityRetrievalStrategy: ~
 
     Videni\Bundle\CasbinBundle\Model\ObjectIdentityRetrievalStrategyInterface:
-        alias: 'Videni\Bundle\CasbinBundle\Model\ObjectIdentityRetrievalStrategy'
+        alias: 'Videni\Bundle\CasbinBundle\Acl\Domain\ObjectIdentityRetrievalStrategy'
 
-    Videni\Bundle\CasbinBundle\Model\SecurityIdentityRetrievalStrategy:
+    Videni\Bundle\CasbinBundle\Acl\Domain\ResourceIdentityRetrievalStrategy: ~
+
+    Videni\Bundle\CasbinBundle\Model\ResourceIdentityRetrievalStrategyInterface:
+        alias: 'Videni\Bundle\CasbinBundle\Acl\Domain\ResourceIdentityRetrievalStrategy'
+
+    Videni\Bundle\CasbinBundle\Acl\Domain\SecurityIdentityRetrievalStrategy:
         arguments:
             - '@security.role_hierarchy'
             - '@security.authentication.trust_resolver'
 
     Videni\Bundle\CasbinBundle\Model\SecurityIdentityRetrievalStrategyInterface:
-        alias: 'Videni\Bundle\CasbinBundle\Model\SecurityIdentityRetrievalStrategy'
+        alias: 'Videni\Bundle\CasbinBundle\Acl\Domain\SecurityIdentityRetrievalStrategy'

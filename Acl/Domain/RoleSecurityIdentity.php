@@ -1,6 +1,8 @@
 <?php
 
-namespace Videni\Bundle\CasbinBundle\Model;
+namespace Videni\Bundle\CasbinBundle\Acl\Domain;
+
+use Videni\Bundle\CasbinBundle\Model\SecurityIdentityInterface;
 
 /**
  * A SecurityIdentity implementation for roles.
@@ -24,7 +26,7 @@ final class RoleSecurityIdentity implements SecurityIdentityInterface
      *
      * @return string
      */
-    public function getRole()
+    public function getRole(): string
     {
         return $this->role;
     }
@@ -50,6 +52,6 @@ final class RoleSecurityIdentity implements SecurityIdentityInterface
      */
     public function __toString()
     {
-        return sprintf('RoleSecurityIdentity(%s)', $this->role);
+        return $this->role;
     }
 }

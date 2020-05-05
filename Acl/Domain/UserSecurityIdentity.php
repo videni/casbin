@@ -1,11 +1,8 @@
 <?php
 
-namespace Videni\Bundle\CasbinBundle\Model;
+namespace Videni\Bundle\CasbinBundle\Acl\Domain;
 
 use Videni\Bundle\CasbinBundle\Model\SecurityIdentityInterface;
-use Videni\Bundle\CasbinBundle\Util\ClassUtils;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * A SecurityIdentity implementation used for actual users.
@@ -34,36 +31,6 @@ final class UserSecurityIdentity implements SecurityIdentityInterface
 
         $this->username = (string) $username;
         $this->class = $class;
-    }
-
-    /**
-     * Creates a user security identity from a UserInterface.
-     *
-     * @param UserInterface $user
-     *
-     * @return UserSecurityIdentity
-     */
-    public static function fromAccount(UserInterface $user)
-    {
-        return new self($user->getUsername(), ClassUtils::getRealClass($user));
-    }
-
-    /**
-     * Creates a user security identity from a TokenInterface.
-     *
-     * @param TokenInterface $token
-     *
-     * @return UserSecurityIdentity
-     */
-    public static function fromToken(TokenInterface $token)
-    {
-        $user = $token->getUser();
-
-        if ($user instanceof UserInterface) {
-            return self::fromAccount($user);
-        }
-
-        return new self((string) $user, is_object($user) ? ClassUtils::getRealClass($user) : ClassUtils::getRealClass($token));
     }
 
     /**
@@ -108,6 +75,6 @@ final class UserSecurityIdentity implements SecurityIdentityInterface
      */
     public function __toString()
     {
-        return sprintf('UserSecurityIdentity(%s, %s)', $this->username, $this->class);
+        return sprintf('%s:%s', $this->class, $this->username);
     }
 }

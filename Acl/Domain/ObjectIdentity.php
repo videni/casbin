@@ -1,10 +1,11 @@
 <?php
 
 
-namespace Videni\Bundle\CasbinBundle\Model;
+namespace Videni\Bundle\CasbinBundle\Acl\Domain;
 
 use Videni\Bundle\CasbinBundle\Exception\InvalidDomainObjectException;
-use Videni\Bundle\CasbinBundle\Model\Util\ClassUtils;
+use Videni\Bundle\CasbinBundle\Util\ClassUtils;
+use Videni\Bundle\CasbinBundle\Model\ObjectIdentityInterface;
 
 /**
  * ObjectIdentity implementation.
@@ -33,34 +34,6 @@ final class ObjectIdentity implements ObjectIdentityInterface
 
         $this->identifier = $identifier;
         $this->type = $type;
-    }
-
-    /**
-     * Constructs an ObjectIdentity for the given domain object.
-     *
-     * @param object $domainObject
-     *
-     * @throws InvalidDomainObjectException
-     *
-     * @return ObjectIdentity
-     */
-    public static function fromDomainObject($domainObject)
-    {
-        if (!is_object($domainObject)) {
-            throw new InvalidDomainObjectException('$domainObject must be an object.');
-        }
-
-        try {
-            if ($domainObject instanceof DomainObjectInterface) {
-                return new self($domainObject->getObjectIdentifier(), ClassUtils::getRealClass($domainObject));
-            } elseif (method_exists($domainObject, 'getId')) {
-                return new self((string) $domainObject->getId(), ClassUtils::getRealClass($domainObject));
-            }
-        } catch (\InvalidArgumentException $e) {
-            throw new InvalidDomainObjectException($e->getMessage(), 0, $e);
-        }
-
-        throw new InvalidDomainObjectException('$domainObject must either implement the DomainObjectInterface, or have a method named "getId".');
     }
 
     /**
@@ -97,6 +70,6 @@ final class ObjectIdentity implements ObjectIdentityInterface
      */
     public function __toString()
     {
-        return sprintf('ObjectIdentity(%s, %s)', $this->identifier, $this->type);
+        return sprintf('%s:%s', $this->type, $this->identifier);
     }
 }

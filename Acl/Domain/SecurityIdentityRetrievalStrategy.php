@@ -1,6 +1,6 @@
 <?php
 
-namespace Videni\Bundle\CasbinBundle\Model;
+namespace Videni\Bundle\CasbinBundle\Acl\Domain;
 
 use Symfony\Component\Security\Core\Authentication\AuthenticationTrustResolverInterface;
 use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
