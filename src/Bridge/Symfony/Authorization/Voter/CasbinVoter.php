@@ -1,6 +1,6 @@
 <?php
 
-namespace Videni\Casbin\Authorization\Voter;
+namespace Videni\Casbin\Bridge\Symfony\Authorization\Voter;
 
 use Videni\Casbin\Model\ObjectIdentityInterface;
 use Videni\Casbin\Model\ObjectIdentityRetrievalStrategyInterface;

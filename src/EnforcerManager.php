@@ -9,7 +9,9 @@ use Psr\Container\ContainerInterface;
 class EnforcerManager
 {
     private $enforcers = [];
+
     private $defaultEnforcer;
+    
     private $container;
 
     public function __construct(

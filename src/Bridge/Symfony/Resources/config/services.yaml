@@ -4,24 +4,28 @@ services:
         autoconfigure: true
         public: false
 
-    Videni\Casbin\Bridge\Symfony\DependencyInjection\Authorization\Voter\CasbinVoter:
+    Videni\Casbin\Bridge\Symfony\Authorization\Voter\CasbinVoter:
         tags:
             - { name: 'security.voter' }
 
     Videni\Casbin\Acl\Domain\ObjectIdentityRetrievalStrategy: ~
 
-    Videni\Casbin\Model\ObjectIdentityRetrievalStrategyInterface:
-        alias: 'Videni\Casbin\Acl\Domain\ObjectIdentityRetrievalStrategy'
-
     Videni\Casbin\Acl\Domain\ResourceIdentityRetrievalStrategy: ~
-
-    Videni\Casbin\Model\ResourceIdentityRetrievalStrategyInterface:
-        alias: 'Videni\Casbin\Acl\Domain\ResourceIdentityRetrievalStrategy'
 
     Videni\Casbin\Acl\Domain\SecurityIdentityRetrievalStrategy:
         arguments:
             - '@security.role_hierarchy'
             - '@security.authentication.trust_resolver'
 
+    Videni\Casbin\Model\ObjectIdentityRetrievalStrategyInterface:
+        alias: 'Videni\Casbin\Acl\Domain\ObjectIdentityRetrievalStrategy'
+
+    Videni\Casbin\Model\ResourceIdentityRetrievalStrategyInterface:
+        alias: 'Videni\Casbin\Acl\Domain\ResourceIdentityRetrievalStrategy'
+   
     Videni\Casbin\Model\SecurityIdentityRetrievalStrategyInterface:
         alias: 'Videni\Casbin\Acl\Domain\SecurityIdentityRetrievalStrategy'
+
+    Videni\Casbin\Bridge\Symfony\Command\InstallTableCommand:
+        tags:
+          - { name: console.command }

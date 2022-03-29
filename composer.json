@@ -14,12 +14,6 @@
         "casbin/casbin": "^3.20",
         "casbin/database-adapter":"^1.6"
     },
-    "repositories": [
-        {
-            "url": "https://github.com/videni/casbin.git",
-            "type": "vcs"
-        }
-    ],
     "autoload": {
         "psr-4": {
             "Videni\\Casbin\\": "src/"

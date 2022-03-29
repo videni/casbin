@@ -5,7 +5,7 @@ namespace Videni\Casbin\Acl\Domain;
 use Videni\Casbin\Exception\InvalidDomainObjectException;
 use Videni\Casbin\Model\ObjectIdentityRetrievalStrategyInterface;
 use Videni\Casbin\Model\DomainObjectInterface;
-
+use Videni\Casbin\Model\ResourceIdentityRetrievalStrategyInterface;
 /**
  * Strategy to be used for retrieving object identities from domain objects.
  */
@@ -13,7 +13,7 @@ class ObjectIdentityRetrievalStrategy implements ObjectIdentityRetrievalStrategy
 {
     private $resourceIdentityRetrievalStrategy;
 
-    public function __construct(ResourceIdentityRetrievalStrategy $resourceIdentityRetrievalStrategy)
+    public function __construct(ResourceIdentityRetrievalStrategyInterface $resourceIdentityRetrievalStrategy)
     {
         $this->resourceIdentityRetrievalStrategy = $resourceIdentityRetrievalStrategy;
     }
