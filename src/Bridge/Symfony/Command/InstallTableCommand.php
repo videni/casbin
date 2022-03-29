@@ -28,11 +28,11 @@ final class InstallTableCommand extends Command
 
         $this
             ->setName('videni-casbin:install')
-            ->setDescription('Installs casbin database tables.')
+            ->setDescription('Installs Casbin database tables.')
             ->setHelp(
                 <<<EOT
-The <info>%command.name%</info> command installs casbin database tables for your casbin enforcer, 
-only necessary if you load casbin rules from database. installable adapters: {$installables} 
+The <info>%command.name%</info> command installs Casbin database tables for your Casbin enforcer, 
+only necessary if you load Casbin policies from database. installable adapters: {$installables} 
 EOT
             )
             ->addArgument('adapter', InputArgument::REQUIRED, 'A database adapter you configured')
@@ -50,7 +50,7 @@ EOT
             return 1;
         }
 
-        /** @var \Videni\Casbin\Adapter\DatabaseAdapter  $adapter*/
+        /** @var \Videni\Casbin\Adapter\DatabaseAdapter  $adapter */
         $adapter = $adapters[$adapter];
         $adapter->initTable();
 

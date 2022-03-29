@@ -1,14 +1,20 @@
-symfony-casbin
+videni/casbin
 =============
 
-[![Latest Stable Version](http://poser.pugx.org/videni/symfony-casbin/v)](https://packagist.org/packages/videni/symfony-casbin) [![Total Downloads](http://poser.pugx.org/videni/symfony-casbin/downloads)](https://packagist.org/packages/videni/symfony-casbin) [![Latest Unstable Version](http://poser.pugx.org/videni/symfony-casbin/v/unstable)](https://packagist.org/packages/videni/symfony-casbin) [![License](http://poser.pugx.org/videni/symfony-casbin/license)](https://packagist.org/packages/videni/symfony-casbin) [![PHP Version Require](http://poser.pugx.org/videni/symfony-casbin/require/php)](https://packagist.org/packages/videni/symfony-casbin)
+[![Latest Stable Version](http://poser.pugx.org/videni/casbin/v)](https://packagist.org/packages/videni/casbin) [![Total Downloads](http://poser.pugx.org/videni/casbin/downloads)](https://packagist.org/packages/videni/casbin) [![Latest Unstable Version](http://poser.pugx.org/videni/casbin/v/unstable)](https://packagist.org/packages/videni/casbin) [![License](http://poser.pugx.org/videni/casbin/license)](https://packagist.org/packages/videni/casbin) [![PHP Version Require](http://poser.pugx.org/videni/casbin/require/php)](https://packagist.org/packages/videni/casbin)
 
-Use Casbin in Symfony Framework, Casbin is a powerful and efficient open-source access control library.
+Use Casbin in Symfony Framework, Casbin is a powerful and efficient open-source access control library. Built on top of [php-casbin/php-casbin](https://github.com/php-casbin/php-casbin) and [php-casbin/database-adapter](https://github.com/php-casbin/database-adapter)
+
+## Installation
+
+### 1. Add `videni/casbin` as your dependency
 
 
-## Usage
+```
+composer require videni/casbin:"^1.0@dev"
+```
 
-### 1. Configure your enforcers
+### 2. Configure your enforcers
 
 ```
 videni_casbin:
@@ -29,8 +35,24 @@ videni_casbin:
                 hostport: "3306"
 ```
 
-### 2. Install database table if you use DatabaseAdapter
+### 3. Install database table if you use DatabaseAdapter
 
 ```
 bin/console videni-casbin:install mysql
 ```
+
+## Usage
+
+### 1. Casbin enforcer
+
+you can get the default enforcer by `videni_casbin.default_enforcer`, others are managed by EnforcerManager.
+
+```
+/** @var \Videni\Casbin\EnforcerManager $enforcerManager **/
+$enforcerManager->getEnforer('mysql'); //  return the default enforcer if no argument provided.
+```
+
+### 2. Symfony security voter - CasbinVoter
+
+A Symfony security voter which uses the default casbin enforcer. 
+

@@ -9,7 +9,7 @@ class DatabaseAdapter extends Adapter
 {
     /**
      * Disable loading database migration every time, 
-     * we prefer to generate database for the first time.
+     * I prefer to generate database tables for the first time.
      *
      * @param array $config
      */
