@@ -31,6 +31,6 @@ class EnforcerManager
             throw new NotFoundException(sprintf('Enforcer %s is not set', $name));
         }
 
-        return $this->container->get($this->enforces[$name]);
+        return $this->container->get($this->enforcers[$name]);
     }
 }

@@ -35,7 +35,7 @@ videni_casbin:
                 hostport: "3306"
 ```
 
-### 3. Install database table if you use DatabaseAdapter
+### 3. Install database tables if you use DatabaseAdapter
 
 ```
 bin/console videni-casbin:install mysql
