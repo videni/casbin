@@ -41,6 +41,8 @@ videni_casbin:
 bin/console videni-casbin:install mysql
 ```
 
+the `mysql` is your adapter name
+
 ## Usage
 
 ### 1. Casbin enforcer
